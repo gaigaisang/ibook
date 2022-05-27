@@ -14,7 +14,30 @@ $(function () {
         });
 
         if (email.hasClass("is-valid") && username.hasClass("is-valid") && password.hasClass("is-valid") && regpassword.hasClass("is-valid") && email.val() != "" && username.val() != "" && password.val() != "" && regpassword.val() != "") {
-            return true;
+            $.post("RegisterServlet", {
+                email: email.val(),
+                username: username.val(),
+                password: password.val(),
+            }, function (isSuccess) {
+                if (isSuccess) {
+                    $("#main").empty();
+                    $("#main").append("<br><br><div class=\"alert alert-success\" role=\"alert\">\n" +
+                        "  <h4 class=\"alert-heading\">Success!</h4>\n" +
+                        "  <p>You have successfully registered!</p>\n" +
+                        "  <hr>\n" +
+                        "  <p class=\"mb-0\">请前往邮箱激活!</p>\n" +
+                        "</div>");
+                } else {
+                    $("#main").empty();
+                    $("#main").append("<br><br><div class=\"alert alert-danger\" role=\"alert\">\n" +
+                        "  <h4 class=\"alert-heading\">Error!</h4>\n" +
+                        "  <p>Something went wrong!</p>\n" +
+                        "  <hr>\n" +
+                        "  <p class=\"mb-0\">Please try again!</p>\n" +
+                        "</div>");
+                }
+            });
+            return false;
         } else {
             return false;
         }
@@ -26,7 +49,8 @@ function isSave() {
     if (username.val()) {
         if (usernamereg.test(username.val())) {
 
-            $.get("AjaxServlet", {username: $("#InputUsername").val()}, function (isSave) {
+            $.get("IsUsernameServlet", {username: $("#InputUsername").val()}, function (isSave) {
+                console.log("11111")
                 if (isSave) {
                     $("#usernameHelp").addClass("alert-danger inpdanger").removeClass("alert-success").html("用户名已存在");
                     $("#InputUsername").removeClass("is-valid is-invalid").addClass("border-danger");
@@ -49,7 +73,6 @@ function isSave() {
 }
 
 function alertShow(e) {
-    console.log(e)
     $(".alert").not('.inpdanger').hide();
     $(e).parent().find("small").show();
     var emailreg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;

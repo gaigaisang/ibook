@@ -49,6 +49,6 @@ public class MailUtils {
 	}
 @Test
 public  void test() throws MessagingException {
-	sendMail("geliao233@163.com","hello");
+	sendMail("geliao233@163.com","<a href='https://www.baidu.com'>点击</a>");
 }
 }
