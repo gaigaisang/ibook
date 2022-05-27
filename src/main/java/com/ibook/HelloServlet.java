@@ -1,4 +1,4 @@
-package com.ibook.ibook;
+package com.ibook;
 
 import java.io.*;
 import javax.servlet.http.*;
