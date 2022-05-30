@@ -2,18 +2,13 @@ package com.ibook.bean;
 
 public class OrderItem {
     private String id;
-    private Book book;
-    private int num;
-    private double price;
-
+    private CartItem cartItem;
     public OrderItem() {
     }
 
-    public OrderItem(String id, Book book, int num, double price) {
+    public OrderItem(String id, CartItem cartItem) {
         this.id = id;
-        this.book = book;
-        this.num = num;
-        this.price = price;
+        this.cartItem = cartItem;
     }
 
     public String getId() {
@@ -24,37 +19,19 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Book getBook() {
-        return book;
+    public CartItem getCartItem() {
+        return cartItem;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCartItem(CartItem cartItem) {
+        this.cartItem = cartItem;
     }
 
     @Override
     public String toString() {
         return "OrderItem{" +
                 "id='" + id + '\'' +
-                ", book=" + book +
-                ", num=" + num +
-                ", price=" + price +
+                ", cartItem=" + cartItem +
                 '}';
     }
 }

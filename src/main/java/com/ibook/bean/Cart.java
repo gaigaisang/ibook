@@ -3,26 +3,39 @@ package com.ibook.bean;
 import java.util.List;
 
 public class Cart {
-    private List<Book> books;
+    private User user; //userid
+    private List<CartItem> cartitems;
     private double price;
 
     public Cart() {
     }
-
-    public Cart(List<Book> books, double price) {
-        this.books = books;
+    public Cart(User user, List<CartItem> books, double price) {
+        this.user = user;
+        this.cartitems = books;
         this.price = price;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public User getUser() {
+        return user;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<CartItem> getCartitems() {
+        return cartitems;
+    }
+
+    public void setCartitems(List<CartItem> cartitems) {
+        this.cartitems = cartitems;
     }
 
     public double getPrice() {
+
+        for (CartItem item : cartitems) {
+            price += item.getPrice();
+        }
         return price;
     }
 
@@ -33,7 +46,8 @@ public class Cart {
     @Override
     public String toString() {
         return "Cart{" +
-                "books=" + books +
+                "user=" + user +
+                ", books=" + cartitems +
                 ", price=" + price +
                 '}';
     }

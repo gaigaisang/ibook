@@ -3,6 +3,7 @@ package com.ibook.servlet;
 import com.ibook.bean.User;
 import com.ibook.service.impl.UserServiceImpl;
 import com.ibook.utils.MailUtils;
+import org.junit.Test;
 
 import javax.mail.MessagingException;
 import javax.servlet.*;
@@ -36,7 +37,7 @@ public class RegisterServlet extends HttpServlet {
                         "    <a href='"+url+"'>"+url+"</a>\n" +
                         "    <p>祝您使用愉快，使用过程中您有任何问题请及时联系我们。</p>";
                 try {
-                    MailUtils.sendMail("geliao233@163.com",content);
+                    MailUtils.sendMail(email,content);
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
@@ -51,5 +52,9 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.doGet(request, response);
+    }
+    @Test
+    public void test(){
+        System.out.println(UUID.randomUUID().toString());
     }
 }

@@ -3,6 +3,7 @@ package com.ibook.dao.impl;
 import com.ibook.bean.Book;
 import com.ibook.dao.BookDao;
 import com.ibook.utils.DruidUtil;
+import org.junit.Test;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -34,9 +35,29 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getBookList() {
+    public List<Book> getAllBook() {
         String sql = "select * from book";
-        List<Book> books = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class));
+        List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class));
+        return list;
+    }
+
+    @Override
+    public List<Book> getBookList(String category, int page, int size) {
+        String sql = "select * from book";
+        if (!category.equals("all")) {
+            sql += ",category where book.category_id = category.id and category.name = ?";
+        }
+        if (page == 0) {
+            page = 1;
+        }
+        sql += " limit ?,?";
+
+        if (category.equals("all")) {
+            List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), (page - 1) * size, size);
+            return list;
+        }
+
+        List<Book> books = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), category, (page - 1) * size, size);
         return books;
     }
 

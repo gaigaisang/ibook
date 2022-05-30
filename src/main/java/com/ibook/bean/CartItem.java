@@ -33,7 +33,7 @@ public class CartItem {
     }
 
     public double getPrice() {
-        return price;
+        return book.getPrice()*num;
     }
 
     public void setPrice(double price) {

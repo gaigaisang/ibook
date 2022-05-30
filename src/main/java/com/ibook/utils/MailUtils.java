@@ -33,6 +33,7 @@ public class MailUtils {
 		Authenticator auth = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication("2805946616@qq.com", "ucwdkbettarpddee");//邮箱账号及授权码
+//				return new PasswordAuthentication("1003959101@qq.com", "racuxubosapgbbif");//邮箱账号及授权码
 			}
 		};
 

@@ -16,11 +16,8 @@ public class ActivateServlet extends HttpServlet {
         String activateCode = request.getParameter("activateCode");
         if (activateCode != null) {
             UserServiceImpl userService = new UserServiceImpl();
-            if (userService.activateUser(activateCode)) {
-                request.setAttribute("msg", true);
-                request.getRequestDispatcher("/jump.jsp").forward(request, response);
-            }
-            request.setAttribute("msg", false);
+            request.setAttribute("msg", userService.activateUser(activateCode));
+            request.getRequestDispatcher("/jump.jsp").forward(request, response);
         }
     }
 

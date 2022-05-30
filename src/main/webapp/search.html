@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iBook</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery-3.6.0.js"></script>
+    <script src="static/js/bootstrap.bundle.js"></script>
+    <script src="static/js/search.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-icons/1.8.3/font/bootstrap-icons.css">
+</head>
+<body>
+
+<style>
+    .card img {
+        text-align: center;
+        margin: auto;
+        width: 150px;
+        height: 210px;
+    }
+    .card {
+        text-align: center;
+    }
+
+    .card-body p {
+        margin: 0px;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <a class="navbar-brand" href="index.html">
+        <img src="static/img/logo1.png" width="30" height="30" class="d-inline-block align-top rounded" alt="">
+        iBook
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-expanded="false">
+                    <i style="color: tomato;" class="bi bi-geo-alt"></i>地址
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">中国大陆</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">河北</a>
+                    <a class="dropdown-item" href="#">北京</a>
+                </div>
+            </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="login.html">登录 <span class="sr-only">(current)</span></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">注册 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <!-- <a class="nav-link" href="#">购物车 <span class="sr-only">(current)</span></a> -->
+                    <button class="btn btn-light my-2 my-sm-0" type="submit"><a style="text-decoration: none;"
+                                                                                href="#">购物车<small><span
+                            class="badge badge badge-pill badge-danger">4</span></small></a></button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="imgtest.html">后台 <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</nav>
+<div class="container mt-2">
+    <div class="row clearfix">
+        <div class="col-md-2 column">
+        </div>
+        <div class="col-md-8 column">
+            <div class="input-group input-group-lg">
+                <input id="searchUserInp" type="text" class="form-control" placeholder="bookname">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="searchUserBtn"><i
+                            class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 column">
+        </div>
+
+    </div>
+    <hr>
+    <div class="row clearfix" id="bookmain">
+
+<!--        <div class="col-sm-6 col-md-4 col-lg-3 ">-->
+<!--            <div class="card" style="width: 18rem;">-->
+<!--                <a href="#"><img src="static/img/bookcover/101.jpg" class="card-img-top" alt="..."></a>-->
+<!--                <div class="card-body">-->
+<!--                    <p><small>书名：<strong>book</strong></small></p>-->
+<!--                    <p><small>作者：<strong>jonson</strong></small></p>-->
+<!--                    <p><small>价格：<strong>66.8</strong></small></p>-->
+<!--                    <button type="button" class="btn btn-primary">-->
+<!--                        添加到购物车-->
+<!--                    </button>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+
+            <li class="page-item" id="page-end">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+</div>
+</body>
+</html>

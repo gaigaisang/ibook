@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iBook</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery-3.6.0.js"></script>
+    <script src="static/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-icons/1.8.3/font/bootstrap-icons.css">
+</head>
+<body>
+<style>
+    tbody td{
+        /*文本垂直居中*/
+        vertical-align: middle !important;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <a class="navbar-brand" href="index.html">
+        <img src="static/img/logo1.png" width="30" height="30" class="d-inline-block align-top rounded" alt="">
+        iBook
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-expanded="false">
+                    <i style="color: tomato;" class="bi bi-geo-alt"></i>地址
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">中国大陆</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">河北</a>
+                    <a class="dropdown-item" href="#">北京</a>
+                </div>
+            </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="login.html">登录 <span class="sr-only">(current)</span></a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">注册 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <!-- <a class="nav-link" href="#">购物车 <span class="sr-only">(current)</span></a> -->
+                    <button class="btn btn-light my-2 my-sm-0" type="submit"><a style="text-decoration: none;"
+                                                                                href="#">购物车<small><span
+                            class="badge badge badge-pill badge-danger">4</span></small></a></button>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="imgtest.html">后台 <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="bg-light p-2 mt-1"><strong>确认订单信息</strong></div>
+    <table class="table mt-2 ">
+        <thead>
+        <tr>
+            <th scope="col">书籍</th>
+            <th scope="col">类别</th>
+            <th scope="col">单价</th>
+            <th scope="col">数量</th>
+            <th scope="col">小计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">
+                <div class="float-left">
+                    <a href="#"><img src="static/img/bookcover/101.jpg" class="" alt="..."></a>
+                </div>
+                <div class="float-left ml-4">
+                    <h3><i style="color: darkred" class="bi bi-book"></i>书名</h3>
+                    <small>描述信息描述信息描述信息描述信息描息描</small>
+                    <h6 class=""><small class="mr-4">作者:</small><small>类别:</small></h6>
+                </div>
+
+            </th>
+            <td>文学</td>
+            <td>12.8</td>
+            <td>1</td>
+            <td>12.8</td>
+        </tr>
+
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4" class="text-right">总计</td>
+            <td><i style="color: red;font-size: 0.5rem;" class="bi bi-currency-yen ml-2"></i>12.8</td>
+        </tr>
+
+        </tfoot>
+
+    </table>
+    <button class="btn btn-primary btn-block mt-2">确认订单</button>
+
+</div>
+</body>
+</html>
