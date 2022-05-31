@@ -19,10 +19,10 @@ function showbook(category,pageIndex) {
                     '<button type="button" class="btn btn-primary">添加到购物车 </button> ' +
                     '</div> </div> </div>')
             }
-            for (var i = 0; i < data.totalPage; i++) {
-                console.log(i)
-                $("#page-end").before('<li class="page-item"><a class="page-link" onclick="showbook('+category+','+(i+1)+')">'+(i+1)+'</a></li>')
-            }
+            // for (var i = 0; i < data.totalPage; i++) {
+            //     console.log(i)
+            //     $("#page-end").before('<li class="page-item"><a class="page-link" onclick="showbook('+category+','+(i+1)+')">'+(i+1)+'</a></li>')
+            // }
             console.log(data)
         }
     });

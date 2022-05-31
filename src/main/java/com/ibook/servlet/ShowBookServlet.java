@@ -18,7 +18,7 @@ public class ShowBookServlet extends HttpServlet {
         String category = request.getParameter("category");
         if (category != null) {
             BookServiceImpl bookService = new BookServiceImpl();
-            Page page = bookService.getBookByPage(1, 2, category);
+            Page page = bookService.getBookByPage(1, 8, category);
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getWriter(), page);
         }

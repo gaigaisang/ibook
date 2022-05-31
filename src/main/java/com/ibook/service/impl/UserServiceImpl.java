@@ -30,12 +30,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean findUser(String username, String password) {
+    public User findUser(String username, String password) {
         List<User> users = userDaoImpl.findUser(username, password);
         if (users.size() > 0) {
-            return true;
+            return users.get(0);
         }
-        return false;
+        return null;
+    }
+
+    @Override
+    public User findUserById(String id) {
+        List<User> users = userDaoImpl.findUserById(id);
+        if (users.size() > 0) {
+            return users.get(0);
+        }
+        return null;
     }
 
     @Override
