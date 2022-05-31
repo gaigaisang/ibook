@@ -7,13 +7,13 @@ public class Book {
     private double price;
     private String image;
     private String description;
-    private String category_id;
+    private String category_name;
     private int num;
 
     public Book() {
     }
 
-    public Book(String id, String name, String author, double price, String image, String description, String category_id , int num) {
+    public Book(String id, String name, String author, double price, String image, String description, String category_name, int num) {
         super();
         this.id = id;
         this.name = name;
@@ -21,7 +21,7 @@ public class Book {
         this.price = price;
         this.image = image;
         this.description = description;
-        this.category_id = category_id;
+        this.category_name = category_name;
         this.num = num;
     }
 
@@ -73,12 +73,12 @@ public class Book {
         this.description = description;
     }
 
-    public String getCategory_id() {
-        return category_id;
+    public String getCategory_name() {
+        return category_name;
     }
 
-    public void setCategory_id(String category_id) {
-        this.category_id = category_id;
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
     }
 
     public int getNum() {
@@ -98,7 +98,7 @@ public class Book {
                 ", price=" + price +
                 ", image='" + image + '\'' +
                 ", description='" + description + '\'' +
-                ", category_id='" + category_id + '\'' +
+                ", category_id='" + category_name + '\'' +
                 ", num=" + num +
                 '}';
     }

@@ -7,17 +7,21 @@
     <script src="static/js/jquery-3.6.0.js"></script>
     <script src="static/js/bootstrap.bundle.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-icons/1.8.3/font/bootstrap-icons.css">
+    <script src="static/js/cart.js"></script>
+
 </head>
-<body class="">
+<body >
 <script src="static/js/navtop.js"></script>
 
 
-<div class="container bg-light rounded-lg mt-4">
+
+<div class="container bg-light rounded-lg mt-4" id="cartall">
     <style>
         #top > *:not(:first-child) {
             float: right;
         }
     </style>
+
     <div id="top" class="">
         <nav class="navbar navbar-expand-lg rounded">
 
@@ -26,14 +30,14 @@
                 <div>
                     <ul class="navbar-nav  m-0">
                         <li class="nav-item">
-                            <span class="nav-link">购物车（全部<strong>4</strong>）</span>
+                            <span class="nav-link">购物车（全部<strong id="allbooknum">4</strong>）</span>
                         </li>
                     </ul>
                 </div>
                 <div>
                     <ul class="navbar-nav  m-0 p-1">
                         <li class="nav-item">
-                            <span class="nav-link">已选书籍<strong class="text-danger ml-2">0.00</strong></span>
+                            <span class="nav-link">已选书籍<strong class="text-danger ml-2"><i style="color: red;font-size: 0.2rem;" class="bi bi-currency-yen ml-2"></i>0.00</strong></span>
                         </li>
                         <li class="">
                             <span class="nav-link"><button class="btn btn-secondary btn-sm">结算</button> </span>
@@ -49,7 +53,7 @@
         <table class="table mt-2 ">
             <thead>
             <tr>
-                <th scope="col"><span class="nav-link"><input class="p-0 m-0" type="checkbox" value="" id="defaultCheck2">
+                <th scope="col"><span class="nav-link"><input class="p-0 m-0 bookcheckall" type="checkbox" value="" id="defaultCheck2">
                             <label class="m-0 p-0" for="defaultCheck2">全选</label></span></th>
                 <th scope="col">书籍</th>
                 <th scope="col">类别</th>
@@ -58,30 +62,31 @@
                 <th scope="col">小计</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td class="text-center"><input class="" type="checkbox"></td>
-                <th scope="row">
-                    <div class="float-left">
-                        <a href="#"><img src="static/img/bookcover/101.jpg" class="" alt="..."></a>
-                    </div>
-                    <div class="float-left ml-4">
-                        <h3><i style="color: darkred" class="bi bi-book"></i>书名</h3>
-                        <small>描述信息描述信息描述信息描述信息描息描</small>
-                        <h6 class=""><small class="mr-4">作者:</small><small>类别:</small></h6>
-                    </div>
+            <tbody id="bookmain">
+<!--            <tr>-->
+<!--                <td class="text-center"><input class="" type="checkbox" id="1"></td>-->
+<!--                <th scope="row">-->
+<!--                    <div class="float-left">-->
+<!--                        <a href="#"><img src="static/img/bookcover/101.jpg" class="" alt="..."></a>-->
+<!--                    </div>-->
+<!--                    <div class="float-left ml-4">-->
+<!--                        <h3><i style="color: darkred" class="bi bi-book"></i>书名</h3>-->
+<!--                        <small>描述信息描述信息描述信息描述信息描息描</small>-->
+<!--                        <h6 class=""><small class="mr-4">作者:</small><small>类别:</small></h6>-->
+<!--                    </div>-->
 
-                </th>
-                <td>文学</td>
-                <td>12.8</td>
-                <td>1</td>
-                <td>12.8</td>
-            </tr>
+<!--                </th>-->
+<!--                <td>文学</td>-->
+<!--                <td>12.8</td>-->
+<!--                <td>1</td>-->
+<!--                <td>12.8</td>-->
+<!--            </tr>-->
             
             </tbody>
 
 
         </table>
+        <br><br><br>
     </div>
     <div class="buttom">
 
@@ -93,8 +98,8 @@
                 <div>
                     <ul class="navbar-nav  m-0">
                         <li class="nav-item">
-                        <span class="nav-link"><input class="p-0 m-0" type="checkbox" value="" id="defaultCheck1">
-                            <label class="m-0 p-0" for="defaultCheck1">全选</label></span>
+                        <span class="nav-link"><input class="p-0 m-0 bookcheckall" type="checkbox" value="" id="bookcheckall">
+                            <label class="m-0 p-0" for="bookcheckall">全选</label></span>
 
                         </li>
                         <li class="">
@@ -114,7 +119,7 @@
                             <span class="nav-link">已选书籍<strong class="text-danger">2</strong>件</span>
                         </li>
                         <li class="">
-                            <span class="nav-link">合计：<strong class="text-danger">0.00</strong></span>
+                            <span class="nav-link">合计：<strong class="text-danger"><i style="color: red;font-size: 0.2rem;" class="bi bi-currency-yen ml-2"></i>0.00</strong></span>
                         </li>
                         <li class="">
                             <span class="nav-link"><button class="btn btn-secondary btn-sm">结算</button> </span>

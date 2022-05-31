@@ -3,7 +3,6 @@ package com.ibook.dao.impl;
 import com.ibook.bean.Book;
 import com.ibook.dao.BookDao;
 import com.ibook.utils.DruidUtil;
-import org.junit.Test;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,8 +14,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public int insBook(Book book) {
-        String sql = "insert into book(id,name,author,price,image,description,category_id,num) values(?,?,?,?,?,?,?,?)";
-        int update = jdbcTemplate.update(sql, UUID.randomUUID().toString(), book.getName(), book.getAuthor(), book.getPrice(), book.getImage(), book.getDescription(), book.getCategory_id(), book.getNum());
+        String sql = "insert into book(id,name,author,price,image,description,category_name,num) values(?,?,?,?,?,?,?,?)";
+        int update = jdbcTemplate.update(sql, UUID.randomUUID().toString(), book.getName(), book.getAuthor(), book.getPrice(), book.getImage(), book.getDescription(), book.getCategory_name(), book.getNum());
         return update;
     }
 
@@ -29,8 +28,8 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public int updateBook(String id, Book book) {
-        String sql = "update book set name = ?,author = ?,price = ?,image = ?,description = ?,category_id = ?,num = ? where id = ?";
-        int update = jdbcTemplate.update(sql, book.getName(), book.getAuthor(), book.getPrice(), book.getImage(), book.getDescription(), book.getCategory_id(), book.getNum(), id);
+        String sql = "update book set name = ?,author = ?,price = ?,image = ?,description = ?,category_name = ?,num = ? where id = ?";
+        int update = jdbcTemplate.update(sql, book.getName(), book.getAuthor(), book.getPrice(), book.getImage(), book.getDescription(), book.getCategory_name(), book.getNum(), id);
         return update;
     }
 
@@ -45,7 +44,7 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getBookList(String category, int page, int size) {
         String sql = "select * from book";
         if (!category.equals("all")) {
-            sql += ",category where book.category_id = category.id and category.name = ?";
+            sql += ",category where book.category_name = category.id and category.name = ?";
         }
         if (page == 0) {
             page = 1;
@@ -79,9 +78,9 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getBookByCategory(String category_id) {
-        String sql = "select * from book where category_id = ?";
-        List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), category_id);
+    public List<Book> getBookByCategory(String category_name) {
+        String sql = "select * from book where category_name = ?";
+        List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), category_name);
         return list;
     }
 }

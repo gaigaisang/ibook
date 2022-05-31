@@ -23,8 +23,8 @@
                 password: $("#password").val(),
                 logincheck: $("#logincheck1").prop("checked") ? 'on' : 'null',
             }, function (data) {
-
-                if (data === 'true') {
+                console.log(data);
+                if (data) {
                     window.location.href = "index.html";
                 } else {
                     $('#liveToast').toast({delay: 5000});

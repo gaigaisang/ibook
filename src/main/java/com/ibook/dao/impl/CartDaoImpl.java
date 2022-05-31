@@ -6,6 +6,7 @@ import com.ibook.bean.CartItem;
 import com.ibook.dao.CartDao;
 import com.ibook.service.impl.UserServiceImpl;
 import com.ibook.utils.DruidUtil;
+import org.junit.Test;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -52,10 +53,15 @@ public class CartDaoImpl implements CartDao {
     public Cart selCartByUser(String userId) {
 
         Cart cart = new Cart();
-        cart.setUser(userService.findUserByUsername(userId).get(0));
-//        cart.setCartitems();
+        cart.setUser(userService.findUserById(userId));
+        cart.setCartitems(getCartItem(userId));
+        return cart;
 
-
-        return null;
     }
+    @Test
+    public void test(){
+        Cart cart = selCartByUser("1f125f95-e52f-4ff8-bf3d-432f5844ed14");
+        System.out.println(cart);
+    }
+
 }

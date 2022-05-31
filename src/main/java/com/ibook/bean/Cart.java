@@ -48,7 +48,7 @@ public class Cart {
         return "Cart{" +
                 "user=" + user +
                 ", books=" + cartitems +
-                ", price=" + price +
+                ", price=" + getPrice() +
                 '}';
     }
 }
