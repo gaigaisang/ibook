@@ -8,8 +8,8 @@ import com.ibook.service.CartService;
 public class CartServiceImpl implements CartService {
     CartDaoImpl cartDao = new CartDaoImpl();
     @Override
-    public Boolean addToCart(String userId, CartItem cartItem) {
-        int i = cartDao.addCartItem(userId, cartItem);
+    public Boolean addToCart(String userId, String bookId) {
+        int i = cartDao.addCartItem(userId, bookId);
         if (i>0) {
             return true;
         }

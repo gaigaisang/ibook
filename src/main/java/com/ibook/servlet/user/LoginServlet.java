@@ -1,4 +1,4 @@
-package com.ibook.servlet;
+package com.ibook.servlet.user;
 
 import com.ibook.bean.User;
 import com.ibook.service.impl.UserServiceImpl;

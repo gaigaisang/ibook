@@ -37,10 +37,10 @@
                         <li class="nav-item">
                             <span class="nav-link">已选书籍<strong class="text-danger ml-2"><i
                                     style="color: red;font-size: 0.2rem;"
-                                    class="bi bi-currency-yen ml-2"></i>{{price}}</strong></span>
+                                    class="bi bi-currency-yen ml-2"></i>{{getTotal}}</strong></span>
                         </li>
                         <li>
-                            <span class="nav-link"><button class="btn btn-secondary btn-sm">结算</button> </span>
+                            <span class="nav-link"><button class="btn btn-secondary btn-sm" :class="checkbooks.length>0?'btn-danger':' '" v-bind:disabled="checkbooks.length<=0">结算</button> </span>
                         </li>
                     </ul>
                 </div>
@@ -53,8 +53,8 @@
         <table class="table mt-2 ">
             <thead>
             <tr>
-                <th scope="col"><span class="nav-link"><input class="p-0 m-0 bookcheckall" v-bind:checked="isCheckAll" @click="Checkbook" type="checkbox" value=""
-                                                              id="defaultCheck2">
+                <th scope="col"><span class="nav-link">
+                    <input class="p-0 m-0 bookcheckall" type="checkbox" value="" id="defaultCheck2" v-model="isSelectAll">
                             <label class="m-0 p-0" for="defaultCheck2">全选</label></span></th>
                 <th scope="col">书籍</th>
                 <th scope="col">类别</th>
@@ -66,7 +66,7 @@
             <tbody id="bookmain">
             <tr v-for="(item,index) of cart.cartitems" :key="index">
 
-                <td class="text-center"><input class="" type="checkbox" v-bind:value="item.book.id" v-model="checkbooks"></td>
+                <td class="text-center"><input class="" type="checkbox" :value="1" v-model="item.select"></td>
                 <th scope="row">
                     <div class="float-left">
                         <a href="#"><img v-bind:src="item.book.image" class="" alt="..."></a>
@@ -80,19 +80,23 @@
 
                 </th>
                 <td>{{item.book.category_name}}</td>
-                <td>{{item.book.price}}</td>
+                <td>{{item.book.price.toFixed(2)}}</td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <button class="btn btn-outline-secondary" v-bind:disabled="item.num<=1" @click="item.num--" type="button"><i class="bi bi-dash"></i></button>
+                        <button class="btn btn-outline-secondary" v-bind:disabled="item.num<=1" @click="item.num--"
+                                type="button"><i class="bi bi-dash"></i></button>
                         <div class="col-sm-2 p-0">
                             <input class="form-control text-center" type="tel" v-model.number='item.num'>
                         </div>
-                        <button class="btn btn-outline-secondary" @click="item.num++" type="button"><i class="bi bi-plus"></i></button>
+                        <button class="btn btn-outline-secondary" @click="item.num++" type="button"><i
+                                class="bi bi-plus"></i></button>
                     </div>
                 </td>
-                <td class="text-danger">{{item.book.price*item.num}}</td>
+                <td class="text-danger">{{(item.book.price*item.num).toFixed(2)}}</td>
             </tr>
-
+            <tr v-show="cart.cartitems.length===0" >
+                <td colspan="6" class="text-center">购物车空空的~~</td>
+            </tr>
             </tbody>
 
 
@@ -109,9 +113,10 @@
                 <div>
                     <ul class="navbar-nav  m-0">
                         <li class="nav-item">
-                        <span class="nav-link"><input class="p-0 m-0 bookcheckall" v-bind:checked="isCheckAll" @click="Checkbook" type="checkbox" value=""
+                        <span class="nav-link"><input class="p-0 m-0 bookcheckall" v-model="isSelectAll" type="checkbox"
+                                                      value=""
                                                       id="bookcheckall">
-                            <label class="m-0 p-0" for="bookcheckall" >全选</label></span>
+                            <label class="m-0 p-0" for="bookcheckall">全选</label></span>
 
                         </li>
                         <li class="">
@@ -128,15 +133,15 @@
                 <div>
                     <ul class="navbar-nav  m-0 p-1">
                         <li class="nav-item">
-                            <span class="nav-link">已选书籍<strong class="text-danger">{{books.length}}</strong>件</span>
+                            <span class="nav-link">已选书籍<strong class="text-danger">{{checkbooks.length}}</strong>件</span>
                         </li>
                         <li class="">
                             <span class="nav-link">合计：<strong class="text-danger"><i
                                     style="color: red;font-size: 0.2rem;"
-                                    class="bi bi-currency-yen ml-2"></i>{{price}}</strong></span>
+                                    class="bi bi-currency-yen ml-2"></i>{{getTotal}}</strong></span>
                         </li>
                         <li class="">
-                            <span class="nav-link"><button class="btn btn-secondary btn-sm">结算</button> </span>
+                            <span class="nav-link"><button class="btn btn-secondary btn-sm" :class="checkbooks.length>0?'btn-danger':' '" v-bind:disabled="checkbooks.length<=0">结算</button> </span>
                         </li>
                     </ul>
                 </div>
@@ -148,71 +153,56 @@
 
 </body>
 <script>
-    $(function (){
-        $.get("GetCartServlet",function (data){
+    $(function () {
+        $.get("GetCartServlet", function (data) {
             console.log(data);
 
-            if (data){
+            if (data) {
                 pushcart(data);
             }
         });
-        function pushcart(cart){
-            vm._data.cart=cart;
-            vm._data.books=cart.cartitems.map(function (item){
-                return item.book.id;
-            });
 
+        function pushcart(cart) {
+            vm._data.cart = cart;
+            // Vue添加select响应属性
+            for (var i = 0; i < cart.cartitems.length; i++) {
+                Vue.set(vm._data.cart.cartitems[i], 'select', false);
+            }
         }
     });
-    var vm =   new Vue({
+    var vm = new Vue({
         el: '#cartall',
         data: {
-            price: 0.00,
             cart: '',
-            books:[],
-            checkbooks:[]
+            checkbooks: [],
         },
-        methods: {
-            CheckAll(){
-                var len = this.books.length;
-                this.checkbooks = [];
-                for(var i=0;i<len;i++){
-                    this.checkbooks.push(this.books[i]);
-                }
-            },
-            clearCheck(){
-                this.checkbooks = [];
-            },
-            Checkbook(){
-                if(this.isCheckAll){
-                    this.clearCheck();
-                }else{
-                    this.CheckAll()
-                }
-            },
-        },
-        watch: {
-            cart: {
-                // immediate: true,//初始化时执行一次handler
-                deep: true,//深度监听
-                handler() {
-                    let all=0;
-                    for (var i = 0; i < this.cart.cartitems.length; i++) {
-                        all+=this.cart.cartitems[i].book.price*this.cart.cartitems[i].num;
-                    }
-                    this.price=all;
-                },
-            }
-        },
+        methods: {},
         computed: {
-            isCheckAll(){
-                if(this.books.length===this.checkbooks.length){
-                    return true;
+            getTotal: function () {
+                const newArr = this.cart.cartitems.filter(function (val) {
+                    return val.select === true;
+                });
+                this.checkbooks= newArr;
+                let price = 0;
+                for (let i = 0; i < newArr.length; i++) {
+                    price += newArr[i].num * newArr[i].book.price
                 }
-                return false;
-            }
+                return price.toFixed(2)
+            },
+            isSelectAll: {
+                get: function () {
+                    return this.cart.cartitems.every(function (val) {
+                        return val.select === true;
+                    })
+                },
+                set: function (newValue) {
+                    for (var i = 0; i < this.cart.cartitems.length; i++) {
+                        this.cart.cartitems[i].select = newValue;
+                    }
+                }
+            },
+
         },
     });
 </script>
-<!--<script src="static/js/cart-vue.js"></script>-->
 </html>

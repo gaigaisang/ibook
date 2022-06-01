@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CartDao {
     public int getCartItemNum(String userId ,String bookId);
-    public int addCartItem(String userId,CartItem cartItem);
+    public int addCartItem(String userId,String bookId);
 //    public void deleteCart(int userId,int bookId);
 //    public void updateCart(int userId,int bookId,int count);
     public Cart selCartByUser(String userId);

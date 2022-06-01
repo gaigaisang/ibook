@@ -43,9 +43,9 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public int addCartItem(String userId, CartItem cartItem) {
+    public int addCartItem(String userId, String bookId) {
         String sql = "INSERT INTO cartitem (user_id,book_id,num) VALUES (?,?,?)";
-        int update = jdbcTemplate.update(sql, userId, cartItem.getBook().getId(), cartItem.getNum());
+        int update = jdbcTemplate.update(sql, userId, bookId, 1);
         return update;
     }
 

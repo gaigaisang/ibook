@@ -1,4 +1,4 @@
-package com.ibook.servlet;
+package com.ibook.servlet.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibook.bean.User;
@@ -17,7 +17,6 @@ public class GetUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         HttpSession session = request.getSession();
         String userid = (String) session.getAttribute("userid");
-//        System.out.println(userid);
         UserServiceImpl userService = new UserServiceImpl();
         User user = userService.findUserById(userid);
         if (user != null) {
