@@ -43,6 +43,31 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
+    public CartItem getCartItem(String userId, String bookId) {
+        String sql = "SELECT * FROM book b,cartitem c WHERE b.id=c.book_id AND c.user_id= ?";
+        List<Book> books = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), userId);
+        for (Book book : books) {
+            if (book.getId().equals(bookId)) {
+                CartItem cartItem = new CartItem();
+                cartItem.setBook(book);
+                cartItem.setNum(getCartItemNum(userId, book.getId()));
+                return cartItem;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Book getCartItemBook(String userId, String bookId) {
+        String sql = "SELECT * FROM cartitem c WHERE c.book_id=? AND c.user_id= ?";
+        List<Book> books = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), bookId, userId);
+        if (books.size() > 0) {
+            return books.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public int addCartItem(String userId, String bookId) {
         String sql = "INSERT INTO cartitem (user_id,book_id,num) VALUES (?,?,?)";
         int update = jdbcTemplate.update(sql, userId, bookId, 1);
@@ -58,8 +83,9 @@ public class CartDaoImpl implements CartDao {
         return cart;
 
     }
+
     @Test
-    public void test(){
+    public void test() {
         Cart cart = selCartByUser("1f125f95-e52f-4ff8-bf3d-432f5844ed14");
         System.out.println(cart);
     }

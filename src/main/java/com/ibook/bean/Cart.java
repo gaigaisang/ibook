@@ -1,6 +1,7 @@
 package com.ibook.bean;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Cart {
     private User user; //userid
@@ -51,4 +52,5 @@ public class Cart {
                 ", price=" + getPrice() +
                 '}';
     }
+
 }

@@ -1,6 +1,6 @@
 $.get("GetUserServlet",function (data) {
     console.log(data);
-    if(data!=='null'){
+    if(data){
         $("body").prepend('<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">' +
             ' <a class="navbar-brand" href="index.html">' +
             ' <img src="static/img/logo1.png" width="30" height="30" class="d-inline-block align-top rounded" alt="">' +
@@ -32,7 +32,7 @@ $.get("GetUserServlet",function (data) {
             '' +
             '               </li>' +
             '               <li class="nav-item active">' +
-            '                   <a class="nav-link" href="login.html">退出<span class="sr-only">(current)</span></a>' +
+            '                   <a class="nav-link" href="#" onclick="quit()">退出<span class="sr-only">(current)</span></a>' +
             '               </li>' +
             '               <li class="nav-item">' +
             '                   <a class="nav-link" href="register.html">注册 <span class="sr-only">(current)</span></a>' +
@@ -97,4 +97,11 @@ $.get("GetUserServlet",function (data) {
             '</nav>');
     }
 });
-
+function quit(){
+    $.get("QuitServlet",function (data) {
+        console.log(data);
+        if(data){
+            location.href="index.html";
+        }
+    });
+}

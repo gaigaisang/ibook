@@ -20,17 +20,18 @@ public class AddToCartServlet extends HttpServlet {
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         String bookid = request.getParameter("bookid");
+
         HttpSession session = request.getSession();
         String userid = (String) session.getAttribute("userid");
         if (userid==null) {
             response.getWriter().write("0");//未登录
             return;
         }
-        System.out.println(userid);
-        System.out.println(bookid);
+//        System.out.println(userid);
+//        System.out.println(bookid);
         CartServiceImpl cartService = new CartServiceImpl();
         Boolean result = cartService.addToCart(userid, bookid);
-        System.out.println(result);
+//        System.out.println(result);
         if (result) {
             response.getWriter().write("1");//添加成功
         } else {

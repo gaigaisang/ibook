@@ -156,9 +156,15 @@
     $(function () {
         $.get("GetCartServlet", function (data) {
             console.log(data);
-
             if (data) {
                 pushcart(data);
+            }
+            else {
+                // let data = {
+                //     cartitems: [],
+                // };
+                // pushcart(data);
+                location.href="login.html";
             }
         });
 

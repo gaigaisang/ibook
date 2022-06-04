@@ -1,5 +1,6 @@
 package com.ibook.service.impl;
 
+import com.ibook.bean.Book;
 import com.ibook.bean.Cart;
 import com.ibook.bean.CartItem;
 import com.ibook.dao.impl.CartDaoImpl;
@@ -9,7 +10,12 @@ public class CartServiceImpl implements CartService {
     CartDaoImpl cartDao = new CartDaoImpl();
     @Override
     public Boolean addToCart(String userId, String bookId) {
+        System.out.println("2222");
+        if (cartDao.getCartItemBook(userId, bookId)!=null){
+            return false;
+        }
         int i = cartDao.addCartItem(userId, bookId);
+//        System.out.println("i="+i);
         if (i>0) {
             return true;
         }
@@ -34,4 +40,5 @@ public class CartServiceImpl implements CartService {
         }
         return null;
     }
+
 }

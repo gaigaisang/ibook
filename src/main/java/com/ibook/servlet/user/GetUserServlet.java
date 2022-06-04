@@ -14,16 +14,18 @@ public class GetUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
         HttpSession session = request.getSession();
         String userid = (String) session.getAttribute("userid");
-        UserServiceImpl userService = new UserServiceImpl();
-        User user = userService.findUserById(userid);
-        if (user != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getWriter(), user.getUsername());
-        }
-        else response.getWriter().write("null");
+//        System.out.println("userid = " + userid);
+        if (userid != null) {
+            UserServiceImpl userService = new UserServiceImpl();
+            User user = userService.findUserById(userid);
+            if (user != null) {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(response.getWriter(), user.getUsername());
+            } else response.getWriter().write("null");
+        } else response.getWriter().write("null");
 
 
     }

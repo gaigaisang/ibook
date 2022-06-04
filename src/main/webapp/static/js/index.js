@@ -18,15 +18,19 @@ $(function () {
             console.log(data)
         }
     });
+
 });
 function addToCart(bookid){
     $.post("AddToCartServlet",{bookid:bookid},function (data) {
+        console.log($("#toasttext"))
+        console.log(data)
         if (data===1) {
-            $("#toasttext").innerText="添加成功"
+            $("#toasttext").text("添加成功")
+        }else if(data===0) {
+            $("#toasttext").text("添加失败，请检查是否登录。")
         }else if(data===2) {
-            $("#toasttext").innerText="添加失败，请检查是否登录。"
-        }else if(data===3) {
-            alert("添加失败")
+            $("#toasttext").text("该图书已在购物车内")
+
         }
         $('#liveToast').toast({delay: 3000});
         $('#liveToast').toast('show');
