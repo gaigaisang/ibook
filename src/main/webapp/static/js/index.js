@@ -6,7 +6,7 @@ $(function () {
             for (num in data.list) {
                 $("#bookmain").append('<div class="col-sm-6 col-md-4 col-lg-3 ">' +
                     ' <div class="card" style="width: 18rem;"> ' +
-                    '<a href="http://localhost:8080/ibook/">' +
+                    '<a href="bookinfo.html?bookid='+data.list[num].id+'">' +
                     '<img src="'+data.list[num].image+'" class="card-img-top" alt="..."></a>' +
                     ' <div class="card-body">' +
                     ' <p><small>书名：<strong>'+data.list[num].name+'</strong></small></p> ' +

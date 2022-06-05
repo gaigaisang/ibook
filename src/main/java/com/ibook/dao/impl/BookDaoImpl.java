@@ -42,20 +42,17 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getBookList(String category, int page, int size) {
-        String sql = "select * from book";
-        if (!category.equals("all")) {
-            sql += ",category where book.category_name = category.id and category.name = ?";
-        }
+        String sql = "select * from book limit ?,?";
+
         if (page == 0) {
             page = 1;
         }
-        sql += " limit ?,?";
 
         if (category.equals("all")) {
             List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), (page - 1) * size, size);
             return list;
         }
-
+        sql = "select * from book where category_name = ? limit ?,?";
         List<Book> books = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), category, (page - 1) * size, size);
         return books;
     }
