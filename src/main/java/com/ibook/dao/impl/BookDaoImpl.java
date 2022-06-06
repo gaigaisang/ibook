@@ -41,6 +41,13 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public List<Book> getAllBook(String bookname) {
+        String sql = "select * from book where name like ?";
+        List<Book> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<Book>(Book.class), "%" + bookname + "%");
+        return list;
+    }
+
+    @Override
     public List<Book> getBookList(String category, int page, int size) {
         String sql = "select * from book limit ?,?";
 

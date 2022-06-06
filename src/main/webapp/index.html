@@ -28,23 +28,26 @@
 
 <body>
 <script src="static/js/navtop.js"></script>
+<script>
+
+    function selbook() {
+        window.location.href = "search.html?bookname=" + $("#selbookinp").val();
+    }
+
+</script>
 
 <div class="container">
     <br>
     <div class="row clearfix">
 
         <div class="col-md-2 column">
-            <!--                <a class="navbar-brand" href="index.html">-->
-            <!--                    <img src="static/img/logo1.png" width="30" height="30" class="d-inline-block align-top rounded" alt="" >-->
-            <!--                    iBook-->
-            <!--                </a>-->
         </div>
         <div class="col-md-8 column">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control mr-sm-2" id="selbookinp" type="search" placeholder="Search" aria-label="Search">
         </div>
 
         <div class="col-md-2 column">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" onclick="selbook()">Search</button>
 
         </div>
         <br><br><br>

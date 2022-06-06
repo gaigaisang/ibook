@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <script src="static/js/jquery-3.6.0.js"></script>
     <script src="static/js/bootstrap.bundle.js"></script>
-    <script src="static/js/search.js"></script>
+    <script src="static/js/vue.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-icons/1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
@@ -18,6 +18,7 @@
         width: 150px;
         height: 210px;
     }
+
     .card {
         text-align: center;
     }
@@ -29,17 +30,20 @@
 
 <script src="static/js/navtop.js"></script>
 
-<div class="container mt-2">
+<div class="container mt-2" id="bookmain">
     <div class="row clearfix mb-2">
         <div class="col-md-2 column">
         </div>
         <div class="col-md-8 column">
             <div class="input-group input-group-lg">
-                <input id="searchUserInp" type="text" class="form-control" placeholder="bookname">
+                <input type="text" class="form-control" v-model="bookname" placeholder="搜索书籍">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="searchUserBtn"><i
+                    <button class="btn btn-outline-secondary" type="button" @click="searchbook"><i
                             class="bi bi-search"></i></button>
                 </div>
+                <template v-if="bookname!=''">
+                    {{searchbook()}}
+                </template>
             </div>
         </div>
         <div class="col-md-2 column">
@@ -48,33 +52,135 @@
     </div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">全部书籍</a></li>
-            <li class="breadcrumb-item active" aria-current="page">文学</li>
+            <template v-if="bookname==''">
+                {{search(category)}}
+            </template>
+
+            <li class="breadcrumb-item"><a href="search.html">全部书籍</a></li>
+            <li v-if="category!='all'&&bookname==''" class="breadcrumb-item active" aria-current="page">{{category}}
+            </li>
         </ol>
     </nav>
     <hr>
     <ul class="list-group list-group-horizontal">
-        <a href="#"><li class="list-group-item">计算机</li></a>
-        <a href="#"><li class="list-group-item active">文学</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
-        <a href="#"><li class="list-group-item">历史</li></a>
+        <a href="#" v-for="(category1,index) of categorys" @click.prevent="search(category1.name)" :key="index">
+            <li class="list-group-item " :class="category===category1.name?'active':''">{{category1.name}}</li>
+        </a>
+
     </ul>
     <hr>
-    <div class="row clearfix" id="bookmain">
+    <div class="row clearfix">
+        <div class="col-sm-6 col-md-4 col-lg-3 " v-for="(books,index) of books.list" :key="index">
+            <div class="card" style="width: 18rem;">
+                <a v-bind:href="'bookinfo.html?bookid='+books.id"><img v-bind:src="books.image" class="card-img-top"
+                                                                       alt="..."></a>
+                <div class="card-body">
+                    <p><small>书名：<strong>{{books.name}}</strong></small></p>
+                    <p><small>作者：<strong>{{books.author}}</strong></small></p>
+                    <p><small>价格：<strong>{{Number(books.price).toFixed(2)}}</strong></small></p>
+                    <button type="button" class="btn btn-primary" v-bind:onclick="'addToCart('+books.id+')'">
+                        添加到购物车
+                    </button>
 
+                </div>
+            </div>
+        </div>
     </div>
-
+        <div class="justify-content-center row clearfix" v-if="books.list!==undefined&&books.list.length==0" >
+            <small >未查询到相关书籍</small>
+        </div>
 
 
 </div>
+<div class="position-fixed bottom-0 right-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
+    <div id="liveToast" class="toast hide  " role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+        <div class="toast-header ">
+            <i class="bi bi-info-circle mr-2"></i>
+            <strong class="mr-auto">提示</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span style="color: red;" aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body " id="toasttext">
+
+        </div>
+    </div>
+</div>
 <script>
+    $(function () {
+        if (!(window.location.origin+window.location.pathname===window.location.href)){
+            const bookname = window.location.href.split("?")[1].split("=")[1];
+            vm._data.bookname = bookname;
+        }
+        $.get("GetCategoryServlet", function (data) {
+            if (data) {
+                pushCategory(data);
+
+            } else {
+                alert("没有数据");
+            }
+        });
+
+        function pushCategory(Categorys) {
+            vm._data.categorys = Categorys;
+        }
+    });
+    var vm = new Vue({
+        el: '#bookmain',
+        data: {
+            category: 'all',
+            categorys: '',
+            books: '',
+            bookname: '',
+        },
+        methods: {
+            search(category) {
+                this.category = category;
+                showbook(category, 1);
+                this.bookname = '';
+            },
+            searchbook() {
+                selbook(this.bookname);
+            },
+        },
+
+    });
+
+    function addToCart(bookid) {
+        $.post("AddToCartServlet", {bookid: bookid}, function (data) {
+            console.log($("#toasttext"))
+            console.log(data)
+            if (data === 1) {
+                $("#toasttext").text("添加成功")
+            } else if (data === 0) {
+                $("#toasttext").text("添加失败，请检查是否登录。")
+            } else if (data === 2) {
+                $("#toasttext").text("该图书已在购物车内")
+
+            }
+            $('#liveToast').toast({delay: 3000});
+            $('#liveToast').toast('show');
+        });
+    }
+
+    function showbook(category, pageIndex) {
+        $.get("ShowBookServlet", {category: category, index: pageIndex}, function (data) {
+            if (data) {
+                vm._data.books = data;
+            }
+        });
+    }
+
+    function selbook(bookname) {
+        $.get("GetBookByNameServlet", {bookname: bookname}, function (data) {
+            if (data) {
+                vm._data.books.list = data;
+            } else {
+                alert("没有数据");
+            }
+        });
+    }
+
 
 </script>
 </body>
