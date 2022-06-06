@@ -68,9 +68,30 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
+    /**
+     * 修改购买数量
+     * @param userId 用户id
+     * @param bookId 书籍id
+     * @param num 1增加，-1减少
+     */
+    public int updateCartItemNum(String userId, String bookId, int num) {
+        String sql = "UPDATE cartitem SET num=num+? WHERE book_id=? AND user_id=?";
+        int update = jdbcTemplate.update(sql, num, bookId, userId);
+        return update;
+    }
+
+
+    @Override
     public int addCartItem(String userId, String bookId) {
         String sql = "INSERT INTO cartitem (user_id,book_id,num) VALUES (?,?,?)";
         int update = jdbcTemplate.update(sql, userId, bookId, 1);
+        return update;
+    }
+
+    @Override
+    public int delCartItem(String userId, String bookId) {
+        String sql = "DELETE FROM cartitem WHERE book_id=? AND user_id=?";
+        int update = jdbcTemplate.update(sql, bookId, userId);
         return update;
     }
 

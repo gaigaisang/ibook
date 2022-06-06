@@ -100,9 +100,11 @@
     <div class="bg-light p-2 mb-2"><strong>同类型书籍</strong></div>
     <div class="row clearfix">
 
-        <div class="col-sm-6 col-md-4 col-lg-3 "  v-for="(books,index) of books.list" :key="index" v-if="books.id!=book.id">
+        <div class="col-sm-6 col-md-4 col-lg-3 " v-for="(books,index) of books.list" :key="index"
+             v-if="books.id!=book.id">
             <div class="card" style="width: 18rem;">
-                <a v-bind:href="'bookinfo.html?bookid='+books.id"><img v-bind:src="books.image" class="card-img-top" alt="..."></a>
+                <a v-bind:href="'bookinfo.html?bookid='+books.id"><img v-bind:src="books.image" class="card-img-top"
+                                                                       alt="..."></a>
                 <div class="card-body">
                     <p><small>书名：<strong>{{books.name}}</strong></small></p>
                     <p><small>作者：<strong>{{books.author}}</strong></small></p>
@@ -137,14 +139,14 @@
 <script>
     $(function () {
         const bookId = window.location.href.split("?")[1].split("=")[1];
-        console.log(bookId);
+
         $.get("GetBookServlet", {bookId: bookId}, function (data) {
             if (data) {
                 pushbook(data);
-                console.log(data.category_name);
-                $.get("ShowBookServlet",{category:data.category_name},function (data) {
+
+                $.get("ShowBookServlet", {category: data.category_name}, function (data) {
                     if (data) {
-                        console.log(data);
+
                         pushbooks(data);
                     }
                 });
@@ -157,6 +159,7 @@
         function pushbook(book) {
             vm._data.book = book;
         }
+
         function pushbooks(books) {
             vm._data.books = books;
         }
@@ -166,7 +169,7 @@
         data: {
             num: 1,
             book: '',
-            books:'',
+            books: '',
         },
         methods: {
             addToCard() {
@@ -180,15 +183,16 @@
         },
 
     })
-    function addToCart(bookid){
-        $.post("AddToCartServlet",{bookid:bookid},function (data) {
-            console.log($("#toasttext"))
-            console.log(data)
-            if (data===1) {
+
+    function addToCart(bookid) {
+        $.post("AddToCartServlet", {bookid: bookid}, function (data) {
+
+
+            if (data === 1) {
                 $("#toasttext").text("添加成功")
-            }else if(data===0) {
+            } else if (data === 0) {
                 $("#toasttext").text("添加失败，请检查是否登录。")
-            }else if(data===2) {
+            } else if (data === 2) {
                 $("#toasttext").text("该图书已在购物车内")
 
             }

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="static/css/bootstrap.css">
     <script src="static/js/jquery-3.6.0.js"></script>
     <script src="static/js/bootstrap.bundle.js"></script>
+    <script src="static/js/vue.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/bootstrap-icons/1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
@@ -17,7 +18,7 @@
 </style>
 <script src="static/js/navtop.js"></script>
 
-<div class="container">
+<div class="container" id="orderall">
     <div class="bg-light p-2 mt-1"><strong>确认订单信息</strong></div>
     <table class="table mt-2 ">
         <thead>
@@ -61,5 +62,34 @@
     <button class="btn btn-primary btn-block mt-2">确认订单</button>
 
 </div>
+<script>
+    $(function () {
+        var checkbooks = window.localStorage.getItem("checkbooks");
+        console.log(checkbooks);
+
+        $.get("GetOrderServlet",{bookIds:checkbooks}, function (data) {
+            if (data) {
+                pushorder(data);
+            } else {
+                location.href = "login.html";
+            }
+        });
+        function pushorder(pushorder) {
+            vm._data.pushorder = pushorder;
+        }
+    })
+    var vm = new Vue({
+        el: '#orderall',
+        data: {
+            order:'',
+            price: 0,
+        },
+        methods: {
+        },
+
+        computed: {
+        },
+    });
+</script>
 </body>
 </html>

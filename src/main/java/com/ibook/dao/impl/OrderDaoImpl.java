@@ -1,5 +1,6 @@
 package com.ibook.dao.impl;
 
+import com.ibook.bean.CartItem;
 import com.ibook.bean.Order;
 import com.ibook.dao.OrderDao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -33,5 +34,12 @@ public class OrderDaoImpl implements OrderDao {
             return list.get(0);
         }
         return null;
+    }
+
+    @Override
+    public int insOrderItem(String id, CartItem cartItem) {
+        String sql = "insert into orderitem(id,num,price,order_id,book_id) values(?,?,?,?,?)";
+        int update = jdbcTemplate.update(sql, UUID.randomUUID().toString(), cartItem.getNum(), cartItem.getPrice(), id, cartItem.getBook().getId());
+        return 0;
     }
 }

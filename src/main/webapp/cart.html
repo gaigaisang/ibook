@@ -40,7 +40,9 @@
                                     class="bi bi-currency-yen ml-2"></i>{{getTotal}}</strong></span>
                         </li>
                         <li>
-                            <span class="nav-link"><button class="btn btn-secondary btn-sm" :class="checkbooks.length>0?'btn-danger':' '" v-bind:disabled="checkbooks.length<=0">结算</button> </span>
+                            <span class="nav-link"><button class="btn btn-secondary btn-sm"
+                                                           :class="checkbooks.length>0?'btn-danger':' '"
+                                                           v-bind:disabled="checkbooks.length<=0">结算</button> </span>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +56,8 @@
             <thead>
             <tr>
                 <th scope="col"><span class="nav-link">
-                    <input class="p-0 m-0 bookcheckall" type="checkbox" value="" id="defaultCheck2" v-model="isSelectAll">
+                    <input class="p-0 m-0 bookcheckall" type="checkbox" value="" id="defaultCheck2"
+                           v-model="isSelectAll">
                             <label class="m-0 p-0" for="defaultCheck2">全选</label></span></th>
                 <th scope="col">书籍</th>
                 <th scope="col">类别</th>
@@ -83,18 +86,20 @@
                 <td>{{item.book.price.toFixed(2)}}</td>
                 <td>
                     <div class="input-group input-group-sm">
-                        <button class="btn btn-outline-secondary" v-bind:disabled="item.num<=1" @click="item.num--"
+                        <button class="btn btn-outline-secondary" v-bind:disabled="item.num<=1"
+                                @click="item.num--&&updateCartItemNum(item.book.id,-1)"
                                 type="button"><i class="bi bi-dash"></i></button>
                         <div class="col-sm-2 p-0">
-                            <input class="form-control text-center" type="tel" v-model.number='item.num'>
+                            <input class="form-control text-center " disabled type="tel" v-model.number='item.num'>
                         </div>
-                        <button class="btn btn-outline-secondary" @click="item.num++" type="button"><i
+                        <button class="btn btn-outline-secondary" @click="item.num++&&updateCartItemNum(item.book.id,1)"
+                                type="button"><i
                                 class="bi bi-plus"></i></button>
                     </div>
                 </td>
                 <td class="text-danger">{{(item.book.price*item.num).toFixed(2)}}</td>
             </tr>
-            <tr v-show="cart.cartitems.length===0" >
+            <tr v-show="cart.cartitems.length===0">
                 <td colspan="6" class="text-center">购物车空空的~~</td>
             </tr>
             </tbody>
@@ -120,7 +125,7 @@
 
                         </li>
                         <li class="">
-                            <span class="nav-link">删除</span>
+                            <button class="btn btn-outline-danger btn-sm nav-link" @click="delCartItem">删除</button>
                         </li>
                         <li class="ml-5">
                             <div class="custom-control custom-switch nav-link">
@@ -133,7 +138,8 @@
                 <div>
                     <ul class="navbar-nav  m-0 p-1">
                         <li class="nav-item">
-                            <span class="nav-link">已选书籍<strong class="text-danger">{{checkbooks.length}}</strong>件</span>
+                            <span class="nav-link">已选书籍<strong
+                                    class="text-danger">{{checkbooks.length}}</strong>件</span>
                         </li>
                         <li class="">
                             <span class="nav-link">合计：<strong class="text-danger"><i
@@ -141,7 +147,9 @@
                                     class="bi bi-currency-yen ml-2"></i>{{getTotal}}</strong></span>
                         </li>
                         <li class="">
-                            <span class="nav-link"><button class="btn btn-secondary btn-sm" :class="checkbooks.length>0?'btn-danger':' '" v-bind:disabled="checkbooks.length<=0">结算</button> </span>
+                            <span class="nav-link"><button class="btn btn-secondary btn-sm"
+                                                           :class="checkbooks.length>0?'btn-danger':' '"
+                                                           v-bind:disabled="checkbooks.length<=0" @click="toOrder">结算</button> </span>
                         </li>
                     </ul>
                 </div>
@@ -153,42 +161,57 @@
 
 </body>
 <script>
-    $(function () {
-        $.get("GetCartServlet", function (data) {
-            console.log(data);
-            if (data) {
-                pushcart(data);
-            }
-            else {
-                // let data = {
-                //     cartitems: [],
-                // };
-                // pushcart(data);
-                location.href="login.html";
-            }
-        });
 
-        function pushcart(cart) {
-            vm._data.cart = cart;
-            // Vue添加select响应属性
-            for (var i = 0; i < cart.cartitems.length; i++) {
-                Vue.set(vm._data.cart.cartitems[i], 'select', false);
-            }
-        }
+    $(function () {
+        getCart();
+
     });
     var vm = new Vue({
         el: '#cartall',
         data: {
             cart: '',
             checkbooks: [],
+            price: 0,
         },
-        methods: {},
+        methods: {
+            updateCartItemNum(bookId, num) {
+                // console.log('bookId:' + bookId + ' num:' + num);
+                $.post("UpdateCartItemNumServlet", {bookId: bookId, num: num}, function (data) {
+                    if (!data) {
+                        alert("更新失败");
+                    }
+                });
+            },
+            delCartItem() {
+                let bookIds = [];
+                for (let i = 0; i < this.checkbooks.length; i++) {
+                    bookIds.push(this.checkbooks[i].book.id);
+                }
+                $.post("DelCartItemServlet", {bookIds: bookIds.toString()}, function (data) {
+                    // console.log('data=' + data);
+                    if (data) {
+                        getCart();
+                    } else {
+                        alert("删除失败");
+                    }
+                });
+            },
+            toOrder() {
+                let bookIds = [];
+                for (let i = 0; i < this.checkbooks.length; i++) {
+                    bookIds.push(this.checkbooks[i].book.id);
+                }
+                window.localStorage.setItem("checkbooks",bookIds.toString());
+                window.location.href = "order.html";
+            },
+        },
+
         computed: {
             getTotal: function () {
                 const newArr = this.cart.cartitems.filter(function (val) {
                     return val.select === true;
                 });
-                this.checkbooks= newArr;
+                this.checkbooks = newArr;
                 let price = 0;
                 for (let i = 0; i < newArr.length; i++) {
                     price += newArr[i].num * newArr[i].book.price
@@ -210,5 +233,23 @@
 
         },
     });
+
+    function getCart() {
+        $.get("GetCartServlet", function (data) {
+            if (data) {
+                pushcart(data);
+            } else {
+                location.href = "login.html";
+            }
+        });
+    }
+
+    function pushcart(cart) {
+        vm._data.cart = cart;
+        // Vue添加select响应属性
+        for (var i = 0; i < cart.cartitems.length; i++) {
+            Vue.set(vm._data.cart.cartitems[i], 'select', false);
+        }
+    }
 </script>
 </html>

@@ -9,18 +9,18 @@ public class Order {
     private double price;
     private boolean state;
     private User user;
-    private List<OrderItem> orderItems;
+    private List<CartItem> cartItems;
 
     public Order() {
     }
 
-    public Order(String id, Date ordertime, double price, boolean state, User user, List<OrderItem> orderItems) {
+    public Order(String id, Date ordertime, double price, boolean state, User user, List<CartItem> cartItems) {
         this.id = id;
         this.ordertime = ordertime;
         this.price = price;
         this.state = state;
         this.user = user;
-        this.orderItems = orderItems;
+        this.cartItems = cartItems;
     }
 
     public String getId() {
@@ -63,12 +63,12 @@ public class Order {
         this.user = user;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Order {
                 ", price=" + price +
                 ", state=" + state +
                 ", user=" + user +
-                ", orderItems=" + orderItems +
+                ", cartItems=" + cartItems +
                 '}';
     }
 }

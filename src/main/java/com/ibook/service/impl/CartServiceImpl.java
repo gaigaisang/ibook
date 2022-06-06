@@ -8,6 +8,16 @@ import com.ibook.service.CartService;
 
 public class CartServiceImpl implements CartService {
     CartDaoImpl cartDao = new CartDaoImpl();
+
+    @Override
+    public Boolean updateCartItemNum(String userId, String bookId, int num) {
+        int i = cartDao.updateCartItemNum(userId, bookId, num);
+        if (i == 1) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public Boolean addToCart(String userId, String bookId) {
         System.out.println("2222");
@@ -17,6 +27,15 @@ public class CartServiceImpl implements CartService {
         int i = cartDao.addCartItem(userId, bookId);
 //        System.out.println("i="+i);
         if (i>0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean delCartitem(String userId, String bookId) {
+        int i = cartDao.delCartItem(userId, bookId);
+        if (i == 1) {
             return true;
         }
         return false;
