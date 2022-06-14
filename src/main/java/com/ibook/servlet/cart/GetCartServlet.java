@@ -18,6 +18,12 @@ public class GetCartServlet extends HttpServlet {
         CartServiceImpl cartService = new CartServiceImpl();
         HttpSession session = request.getSession();
         String userid = (String) session.getAttribute("userid");
+        if (request.getParameter("userid")!=null){
+            Cart cart = cartService.getCart(request.getParameter("userid"));
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(response.getWriter(), cart);
+            return;
+        }
 //        System.out.println(userid);
         if (userid != null) {
             Cart cart = cartService.getCart(userid);

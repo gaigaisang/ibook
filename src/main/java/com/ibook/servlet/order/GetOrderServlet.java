@@ -1,9 +1,17 @@
 package com.ibook.servlet.order;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ibook.bean.CartItem;
+import com.ibook.dao.impl.CartDaoImpl;
+import com.ibook.service.impl.CartServiceImpl;
+import com.ibook.service.impl.OrderServiceImpl;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "GetOrderServlet", value = "/GetOrderServlet")
 public class GetOrderServlet extends HttpServlet {
@@ -15,6 +23,20 @@ public class GetOrderServlet extends HttpServlet {
         String userId = (String) session.getAttribute("userid");
         String bookIds = request.getParameter("bookIds");
         String[] bookId = bookIds.split(",");
+
+        List<CartItem> cartItems = new ArrayList<>();
+        for (String id : bookId) {
+            CartDaoImpl cartDao = new CartDaoImpl();
+            CartItem item = cartDao.getCartItem(userId, id);
+            cartItems.add(item);
+        }
+        System.out.println(cartItems.size());
+        OrderServiceImpl orderService = new OrderServiceImpl();
+        String orderid = orderService.initOrder(userId, cartItems);
+
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.writeValue(response.getWriter(), cartItems);
 
     }
 

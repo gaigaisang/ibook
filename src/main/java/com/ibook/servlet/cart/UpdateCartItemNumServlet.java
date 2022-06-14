@@ -21,6 +21,12 @@ public class UpdateCartItemNumServlet extends HttpServlet {
         response.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userid");
+        if (userId==null){
+            if(request.getParameter("userid")!=null){
+                userId=request.getParameter("userid");
+            }
+        }
+
 //        String userId = request.getParameter("userId");
         String bookId = request.getParameter("bookId");
         String num = request.getParameter("num");

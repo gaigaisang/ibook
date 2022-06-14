@@ -31,29 +31,29 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr v-for="(item,index) of order" :key="index">
             <th scope="row">
                 <div class="float-left">
-                    <a href="#"><img src="static/img/bookcover/101.jpg" class="" alt="..."></a>
+                    <a v-bind:href="'bookinfo.html?bookid='+item.book.id"><img v-bind:src="item.book.image" class="" alt="..."></a>
                 </div>
                 <div class="float-left ml-4">
-                    <h3><i style="color: darkred" class="bi bi-book"></i>书名</h3>
-                    <small>描述信息描述信息描述信息描述信息描息描</small>
-                    <h6 class=""><small class="mr-4">作者:</small><small>类别:</small></h6>
+                    <h3><i style="color: darkred" class="bi bi-book"></i>{{item.book.name}}</h3>
+                    <small>{{item.book.description}}</small>
+                    <h6 class=""><small class="mr-4">作者: {{item.book.author}}</small><small>类别: {{item.book.category_name}}</small></h6>
                 </div>
 
             </th>
-            <td>文学</td>
-            <td>12.8</td>
-            <td>1</td>
-            <td>12.8</td>
+            <td>{{item.book.category_name}}</td>
+            <td>{{Number(item.book.price).toFixed(2)}}</td>
+            <td>{{item.num}}</td>
+            <td>{{Number(item.book.price*item.num).toFixed(2)}}</td>
         </tr>
 
         </tbody>
         <tfoot>
         <tr>
             <td colspan="4" class="text-right">总计</td>
-            <td><i style="color: red;font-size: 0.5rem;" class="bi bi-currency-yen ml-2"></i>12.8</td>
+            <td><i style="color: red;font-size: 0.5rem;" class="bi bi-currency-yen ml-2"></i>{{getprice}}</td>
         </tr>
 
         </tfoot>
@@ -68,23 +68,31 @@
         console.log(checkbooks);
 
         $.get("GetOrderServlet",{bookIds:checkbooks}, function (data) {
-            if (data) {
-                pushorder(data);
-            } else {
-                location.href = "login.html";
-            }
+
+            // if (data) {
+            //     pushorder(data);
+            // } else {
+            //     location.href = "login.html";
+            // }
         });
         function pushorder(pushorder) {
-            vm._data.pushorder = pushorder;
+            vm._data.order = pushorder;
         }
     })
     var vm = new Vue({
         el: '#orderall',
         data: {
             order:'',
-            price: 0,
+            // price: 0,
         },
         methods: {
+            getprice(){
+                let price = 0;
+                for (let i = 0; i < this.order.length; i++) {
+                    price += this.order[i].book.price * this.order[i].num;
+                }
+                return price.toFixed(2);
+            }
         },
 
         computed: {

@@ -1,5 +1,7 @@
 package com.ibook.bean;
 
+import java.util.Objects;
+
 public class Book {
     private String id;
     private String name;
@@ -87,6 +89,19 @@ public class Book {
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return Double.compare(book.getPrice(), getPrice()) == 0 && getNum() == book.getNum() && Objects.equals(getId(), book.getId()) && Objects.equals(getName(), book.getName()) && Objects.equals(getAuthor(), book.getAuthor()) && Objects.equals(getImage(), book.getImage()) && Objects.equals(getDescription(), book.getDescription()) && Objects.equals(getCategory_name(), book.getCategory_name());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getAuthor(), getPrice(), getImage(), getDescription(), getCategory_name(), getNum());
     }
 
     @Override

@@ -11,4 +11,5 @@ public interface BookService {
     public List<Book> getBookByName(String name);
     public List<Book> getBookByCategory(String category_id);
     public Page getBookByPage(int index,int pageSize, String category);
+    public List<Book> parseBook(String keyword);
 }

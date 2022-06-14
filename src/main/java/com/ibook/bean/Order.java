@@ -8,19 +8,19 @@ public class Order {
     private Date ordertime;
     private double price;
     private boolean state;
-    private User user;
-    private List<CartItem> cartItems;
+    private String userId;
+    private List<OrderItem> orderItems;
 
     public Order() {
     }
 
-    public Order(String id, Date ordertime, double price, boolean state, User user, List<CartItem> cartItems) {
+    public Order(String id, Date ordertime, double price, boolean state, String userId, List<OrderItem> orderItems) {
         this.id = id;
         this.ordertime = ordertime;
         this.price = price;
         this.state = state;
-        this.user = user;
-        this.cartItems = cartItems;
+        this.userId = userId;
+        this.orderItems = orderItems;
     }
 
     public String getId() {
@@ -55,20 +55,20 @@ public class Order {
         this.state = state;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItems;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override
@@ -78,8 +78,8 @@ public class Order {
                 ", ordertime=" + ordertime +
                 ", price=" + price +
                 ", state=" + state +
-                ", user=" + user +
-                ", cartItems=" + cartItems +
+                ", userId='" + userId + '\'' +
+                ", orderItems=" + orderItems +
                 '}';
     }
 }

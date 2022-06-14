@@ -4,7 +4,9 @@ import com.ibook.bean.Book;
 import com.ibook.bean.Page;
 import com.ibook.dao.impl.BookDaoImpl;
 import com.ibook.service.BookService;
-import org.junit.Test;
+
+
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -13,10 +15,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getAllBook() {
-//        List<Book> bookList = bookDao.getBookList();
-//        if (bookList != null) {
-//            return bookList;
-//        }
+        List<Book> bookList = bookDao.getAllBook();
+        if (bookList != null) {
+            return bookList;
+        }
         return null;
     }
 
@@ -57,9 +59,30 @@ public class BookServiceImpl implements BookService {
         page.setList(bookDao.getBookList(category,page.getPage(),page.getPageSize()));
         return page;
     }
-    @Test
-    public void test(){
-        System.out.println(bookDao.getBookList("all",1,12));
-//        System.out.println(getBookByPage(1,10,"all"));
+
+    @Override
+    public List<Book> parseBook(String keyword) {
+        keyword.length();
+        String[] str=new String[keyword.length()%2==0?keyword.length()/2:keyword.length()/2+1];
+        for (int i = 0; i < str.length; i++) {
+            str[i] = keyword.substring(i * 2, i * 2 + 2);
+        }
+        List<Book> books = new ArrayList<>();
+        for (String s : str) {
+            List<Book> book = bookDao.getBookByName(s);
+            if (book != null) {
+                books.addAll(book);
+            }
+        }
+
+        List<Book> bookList = new ArrayList<>();
+        for (Book value : books) {
+            if (!bookList.contains(value)) {
+                bookList.add(value);
+            }
+        }
+
+        return bookList;
     }
+
 }
