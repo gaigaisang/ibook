@@ -11,7 +11,7 @@
 </head>
 <body>
 <style>
-    tbody td{
+    tbody td {
         /*文本垂直居中*/
         vertical-align: middle !important;
     }
@@ -31,15 +31,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(item,index) of order" :key="index">
+        <tr v-for="(item,index) of cartitems" :key="index">
             <th scope="row">
                 <div class="float-left">
-                    <a v-bind:href="'bookinfo.html?bookid='+item.book.id"><img v-bind:src="item.book.image" class="" alt="..."></a>
+                    <a v-bind:href="'bookinfo.html?bookid='+item.book.id"><img v-bind:src="item.book.image" class=""
+                                                                               alt="..."></a>
                 </div>
                 <div class="float-left ml-4">
                     <h3><i style="color: darkred" class="bi bi-book"></i>{{item.book.name}}</h3>
                     <small>{{item.book.description}}</small>
-                    <h6 class=""><small class="mr-4">作者: {{item.book.author}}</small><small>类别: {{item.book.category_name}}</small></h6>
+                    <h6 class=""><small class="mr-4">作者: {{item.book.author}}</small><small>类别:
+                        {{item.book.category_name}}</small></h6>
                 </div>
 
             </th>
@@ -53,49 +55,54 @@
         <tfoot>
         <tr>
             <td colspan="4" class="text-right">总计</td>
-            <td><i style="color: red;font-size: 0.5rem;" class="bi bi-currency-yen ml-2"></i>{{getprice}}</td>
+            <td><i style="color: red;font-size: 0.5rem;" class="bi bi-currency-yen ml-2"></i>{{getprice()}}</td>
         </tr>
 
         </tfoot>
 
     </table>
-    <button class="btn btn-primary btn-block mt-2">确认订单</button>
+    <button class="btn btn-primary btn-block mt-2" @click="confirmOrder">确认订单</button>
 
 </div>
 <script>
     $(function () {
         var checkbooks = window.localStorage.getItem("checkbooks");
-        console.log(checkbooks);
+        $.get("OrderServlet", {bookIds: checkbooks}, function (data) {
+            console.log(data);
 
-        $.get("GetOrderServlet",{bookIds:checkbooks}, function (data) {
-
-            // if (data) {
-            //     pushorder(data);
-            // } else {
-            //     location.href = "login.html";
-            // }
+            if (data) {
+                pushorder(data);
+            } else {
+                location.href = "login.html";
+            }
         });
+
         function pushorder(pushorder) {
-            vm._data.order = pushorder;
+            vm._data.cartitems = pushorder;
         }
     })
     var vm = new Vue({
         el: '#orderall',
         data: {
-            order:'',
-            // price: 0,
+            cartitems: '',
         },
         methods: {
-            getprice(){
+            getprice() {
                 let price = 0;
-                for (let i = 0; i < this.order.length; i++) {
-                    price += this.order[i].book.price * this.order[i].num;
+                for (let i = 0; i < this.cartitems.length; i++) {
+                    price += this.cartitems[i].book.price * this.cartitems[i].num;
                 }
                 return price.toFixed(2);
+            },
+            confirmOrder() {
+                let bookIds = this.cartitems.map(item => item.book.id).join(",")
+                console.log(bookIds);
+                $.post("ConfirmOrderServlet", {bookIds: bookIds}, function (data) {
+                    if (data) {
+                        alert(data)
+                    }
+                })
             }
-        },
-
-        computed: {
         },
     });
 </script>

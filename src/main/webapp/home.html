@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>iBook</title>
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="static/js/jquery-3.6.0.js"></script>
+    <script src="static/js/bootstrap.bundle.js"></script>
+    <script src="static/js/vue.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+<script src="static/js/navtop.js"></script>
+<div class="container mt-2" id="ordermain">
+    <template>
+        {{search(state)}}
+    </template>
+    <div class="row clearfix mb-2">
+        <div class="col-md-2 column">
+        </div>
+        <div class="col-md-8 column">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" placeholder="搜索订单">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"><i
+                            class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 column">
+        </div>
+
+    </div>
+    <hr>
+    <ul class="list-group list-group-horizontal">
+        <a href="#">
+            <li class="list-group-item" :class="state=='all'?'active':''" @click="search('all')">所以订单</li>
+        </a>
+        <a href="#">
+            <li class="list-group-item" :class="state=='false'?'active':''" @click="search('false')">待支付订单</li>
+        </a>
+        <a href="#">
+            <li class="list-group-item " :class="state=='true'?'active':''" @click="search('true')">已支付订单</li>
+        </a>
+
+    </ul>
+    <hr>
+    <div class="row clearfix">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">图书</th>
+                <th scope="col">单价</th>
+                <th scope="col">数量</th>
+                <th scope="col">实付款</th>
+                <th scope="col">交易状态</th>
+                <th scope="col">订单操作</th>
+            </tr>
+            </thead>
+            <template v-for="order in orders">
+                <thead>
+                <tr class="table-Light">
+                    <th class="" scope="col">
+                        <p class="m-0"><small style="color: black;font-weight: bold ">时间：{{formattime(order.ordertime)}}</small></p>
+                        <p class="m-0"><small>订单号：{{order.id}}</small></p>
+                    </th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col" class="justify-content-center"><i class="bi bi-trash "></i></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="table-bordered" v-for="(orderitem,index) of order.orderItems" :key="index">
+                    <th scope="row">
+                        <div class="float-left">
+                            <a v-bind:href="'bookinfo.html?bookid='+orderitem.cartItem.book.id"><img width="65" height="100" v-bind:src="orderitem.cartItem.book.image" class=""
+                                             alt="..."></a>
+                        </div>
+                        <div class="float-left ml-4">
+                            <h3><i style="color: darkred" class="bi bi-book"></i>{{orderitem.cartItem.book.name}}</h3>
+                            <small>{{orderitem.cartItem.book.description}}</small>
+                            <h6 class=""><small class="mr-4">作者: {{orderitem.cartItem.book.author}}</small><small>类别:
+                                {{orderitem.cartItem.book.category_name}}</small></h6>
+                        </div>
+
+                    </th>
+                    <td>
+                        <span class="nav-link"><strong class="text-danger"><i
+                                style="color: red;font-size: 0.2rem;"
+                                class="bi bi-currency-yen ml-2"></i>{{orderitem.cartItem.book.price.toFixed(2)}}</strong></span></td>
+                    <td>{{orderitem.cartItem.num}}</td>
+                    <!--                    <td>{{}}</td>-->
+                    <!--                    <template v-if="index==0">-->
+                    <!--                        <td v-bind:rowspan="" class="text-danger">{{order.price}}</td>-->
+                    <!--                        <td v-bind:rowspan="2">{{order.state?'已支付':'未支付'}}</td>-->
+                    <!--                    </template>-->
+                    <template v-if="index==0">
+                        <td class="text-danger">
+                            <span class="nav-link"><strong class="text-danger"><i
+                                    style="color: red;font-size: 0.2rem;"
+                                    class="bi bi-currency-yen ml-2"></i>{{order.price.toFixed(2)}}</strong></span>
+                        </td>
+                        <td>{{order.state?'已支付':'未支付'}}</td>
+                    </template>
+
+                </tr>
+                </tbody>
+            </template>
+            <tr v-show="orders.length===0">
+                <td colspan="6" class="text-center">暂无订单~~</td>
+            </tr>
+
+        </table>
+    </div>
+    <!--    <div class="justify-content-center row clearfix" >-->
+    <!--        <small >未查询到相关书籍</small>-->
+    <!--    </div>-->
+
+
+</div>
+<script>
+
+    var vm = new Vue({
+        el: '#ordermain',
+        data: {
+            state: 'all',
+            orders: '',
+        },
+        methods: {
+            search(state) {
+                this.state = state;
+                showorder(state);
+            },
+            formattime(time){
+                let date = dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+                return date;
+            }
+            // searchorder() {
+            //     selbook(this.bookname);
+            // },
+        },
+
+    });
+
+
+    function showorder(state) {
+
+        $.get("GetOrderServlet", {state: state}, function (data) {
+            if (data) {
+                vm._data.orders = data;
+            }
+        });
+    }
+
+    function selorder(orderId) {
+        // $.get("GetBookByNameServlet", {bookname: bookname}, function (data) {
+        //     if (data) {
+        //         vm._data.books.list = data;
+        //     } else {
+        //         vm._data.books.list = undefined;
+        //     }
+        // });
+    }
+
+
+</script>
+</body>
+</html>

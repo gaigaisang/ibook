@@ -43,7 +43,7 @@ $.get("GetUserServlet",function (data) {
             '                   </button>' +
             '               </li>' +
             '               <li class="nav-item">' +
-            '                   <a class="nav-link" href="#">后台 <span class="sr-only">(current)</span></a>' +
+            '                   <a class="nav-link" href="home.html">我的 <span class="sr-only">(current)</span></a>' +
             '               </li>' +
             '           </ul>' +
             '       </form>' +

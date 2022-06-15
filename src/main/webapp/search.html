@@ -86,9 +86,9 @@
             </div>
         </div>
     </div>
-        <div class="justify-content-center row clearfix" v-if="books.list!==undefined&&books.list.length==0" >
-            <small >未查询到相关书籍</small>
-        </div>
+    <div class="justify-content-center row clearfix" v-if="books.list===undefined">
+        <small>未查询到相关书籍</small>
+    </div>
 
 
 </div>
@@ -108,7 +108,7 @@
 </div>
 <script>
     $(function () {
-        if (!(window.location.origin+window.location.pathname===window.location.href)){
+        if (!(window.location.origin + window.location.pathname === window.location.href)) {
             const bookname = window.location.href.split("?")[1].split("=")[1];
             vm._data.bookname = bookname;
         }
@@ -176,7 +176,7 @@
             if (data) {
                 vm._data.books.list = data;
             } else {
-                alert("没有数据");
+                vm._data.books.list = undefined;
             }
         });
     }

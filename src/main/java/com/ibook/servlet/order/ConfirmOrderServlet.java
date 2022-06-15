@@ -2,7 +2,6 @@ package com.ibook.servlet.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibook.bean.CartItem;
-import com.ibook.bean.Order;
 import com.ibook.dao.impl.CartDaoImpl;
 import com.ibook.service.impl.CartServiceImpl;
 import com.ibook.service.impl.OrderServiceImpl;
@@ -14,28 +13,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "GetOrderServlet", value = "/GetOrderServlet")
-public class GetOrderServlet extends HttpServlet {
+@WebServlet(name = "ConfirmOrderServlet", value = "/ConfirmOrderServlet")
+public class ConfirmOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userid");
-        String state = request.getParameter("state");
+        String bookIds = request.getParameter("bookIds");
+        String[] bookId = bookIds.split(",");
 
-        if (userId==null||state==null){
-            return;
+        List<CartItem> cartItems = new ArrayList<>();
+        for (String id : bookId) {
+            CartDaoImpl cartDao = new CartDaoImpl();
+            CartItem item = cartDao.getCartItem(userId, id);
+            cartItems.add(item);
+        }
+        CartServiceImpl cartService = new CartServiceImpl();
+        for (String id : bookId) {
+            cartService.delCartitem(userId, id);
         }
         OrderServiceImpl orderService = new OrderServiceImpl();
-        List<Order> orders = orderService.getOrderList(userId, state);
-        if (orders == null) {
-            response.getWriter().write("false");
-        } else {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getWriter(), orders);
-        }
-
+        String orderid = orderService.initOrder(userId, cartItems);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(response.getWriter(), orderid);
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.ibook.service.impl;
 
 import com.ibook.bean.CartItem;
 import com.ibook.bean.Order;
-import com.ibook.bean.OrderItem;
 import com.ibook.dao.impl.OrderDaoImpl;
 import com.ibook.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +30,39 @@ public class OrderServiceImpl implements OrderService {
             int i1 = orderDao.insOrderItem(orderId, cartItem);
         }
         return orderId;
+    }
+
+    @Override
+    public List<Order> getOrderList(String userId, String state) {
+        List<Order> orders = orderDao.selOrderByUserId(userId);
+        if (orders==null){
+            return null;
+        }
+        switch (state) {
+            case "all":
+                orders.sort((o1, o2) -> o2.getOrdertime().compareTo(o1.getOrdertime()));
+                return orders;
+            case "true":
+                List<Order> orders1 = new ArrayList<>();
+                for (Order order : orders) {
+                    if (order.isState()) {
+                        orders1.add(order);
+                    }
+                }
+                orders1.sort((o1, o2) -> o2.getOrdertime().compareTo(o1.getOrdertime()));
+                return orders1;
+            case "false":
+                List<Order> orders2 = new ArrayList<>();
+                for (Order order : orders) {
+                    if (!order.isState()) {
+                        orders2.add(order);
+                    }
+                }
+                orders2.sort((o1, o2) -> o2.getOrdertime().compareTo(o1.getOrdertime()));
+                return orders2;
+
+        }
+        return null;
+
     }
 }
